@@ -71,7 +71,8 @@ const copy = {
       process: "Process",
       mock: "Free mock",
       quote: "Quote",
-      agent: "Coding agent"
+      agent: "Coding agent",
+      faq: "FAQ"
     },
     agentTitle: "Coding agent: Codex",
     agentLead:
@@ -148,7 +149,8 @@ const copy = {
       process: "Méthode",
       mock: "Maquette",
       quote: "Soumission",
-      agent: "Agent de code"
+      agent: "Agent de code",
+      faq: "FAQ"
     },
     agentTitle: "Agent de code : Codex",
     agentLead:
@@ -167,6 +169,34 @@ const initialForm = {
   budget: "",
   projectType: "",
   message: ""
+};
+
+const structuredData = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      name: "Spaxio",
+      url: "https://spaxio.ca",
+      logo: "https://spaxio.ca/logo.png"
+    },
+    {
+      "@type": "WebSite",
+      name: "Spaxio",
+      url: "https://spaxio.ca",
+      inLanguage: ["en-CA", "fr-CA"]
+    },
+    {
+      "@type": "Service",
+      name: "Luxury-inspired web design and development",
+      serviceType: "Web design and development",
+      provider: {
+        "@type": "Organization",
+        name: "Spaxio",
+        url: "https://spaxio.ca"
+      }
+    }
+  ]
 };
 
 export default function HomePage() {
@@ -245,11 +275,15 @@ export default function HomePage() {
 
   return (
     <main className="page">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
+      />
       <section className="top-visual">
         <div className="scroll-image top" aria-hidden="true">
           <img
             src="https://images.unsplash.com/photo-1520607162513-77705c0f0d4a?auto=format&fit=crop&w=2400&q=80"
-            alt=""
+            alt="Designer crafting a premium website for a modern brand"
             loading="lazy"
           />
         </div>
@@ -257,12 +291,13 @@ export default function HomePage() {
           <div className="logo-banner">
             <img src="/logo.png" alt="Spaxio logo" />
           </div>
-          <div className="nav">
+          <div className="nav" aria-label="Primary">
             <a href="#hero">{t.nav.hero}</a>
             <a href="#process">{t.nav.process}</a>
             <a href="#mock">{t.nav.mock}</a>
             <a href="#quote">{t.nav.quote}</a>
             <a href="#agent">{t.nav.agent}</a>
+            <a href="/faq">{t.nav.faq}</a>
             <button
               className="button secondary"
               style={{ padding: "10px 14px", borderRadius: 10 }}
@@ -309,7 +344,7 @@ export default function HomePage() {
       <section className="scroll-image" aria-hidden="true">
         <img
           src="https://images.unsplash.com/photo-1521737604893-d14cc237f11d?auto=format&fit=crop&w=2000&q=80"
-          alt=""
+          alt="Team collaborating on a high-end digital experience"
           loading="lazy"
         />
       </section>
@@ -322,7 +357,7 @@ export default function HomePage() {
       <section className="scroll-image" aria-hidden="true">
         <img
           src="https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=2000&q=80"
-          alt=""
+          alt="Luxury-inspired workspace for digital product strategy"
           loading="lazy"
         />
       </section>

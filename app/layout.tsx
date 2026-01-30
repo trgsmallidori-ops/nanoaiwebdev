@@ -7,14 +7,23 @@ const sans = Space_Grotesk({ subsets: ["latin"], variable: "--font-sans" });
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://spaxio.ca"),
-  title: "Spaxio — Luxe-grade web builds at honest prices",
+  title: {
+    default: "Spaxio — Luxe-grade web builds at honest prices",
+    template: "%s | Spaxio"
+  },
   description: "Spaxio crafts luxury-inspired websites at a fraction of typical agency cost. Get a quote in minutes and receive a free mock site.",
   keywords: ["Spaxio", "web development", "Next.js", "luxury web design", "affordable websites", "landing page", "web agency"],
   authors: [{ name: "Spaxio" }],
+  creator: "Spaxio",
+  publisher: "Spaxio",
+  category: "Web design",
+  applicationName: "Spaxio",
   alternates: { canonical: "https://spaxio.ca" },
   openGraph: {
     type: "website",
     url: "https://spaxio.ca",
+    siteName: "Spaxio",
+    locale: "en_CA",
     title: "Spaxio — Luxe-grade web builds at honest prices",
     description: "Get luxury-inspired web design, fast builds, and automation-ready sites at honest prices.",
     images: [
@@ -34,9 +43,18 @@ export const metadata: Metadata = {
   },
   robots: {
     index: true,
-    follow: true
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-snippet": -1,
+      "max-image-preview": "large",
+      "max-video-preview": -1
+    }
   },
-  icons: { icon: "/favicon.png", shortcut: "/favicon.png", apple: "/favicon.png" }
+  icons: { icon: "/favicon.png", shortcut: "/favicon.png", apple: "/favicon.png" },
+  referrer: "origin-when-cross-origin",
+  formatDetection: { email: false, address: false, telephone: false }
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
