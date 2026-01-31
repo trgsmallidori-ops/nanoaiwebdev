@@ -81,7 +81,8 @@ const copy = {
       "Typesafe Next.js routes and API handlers wired to SMTP.",
       "Automated code reviews to keep performance and accessibility in check.",
       "Fast iteration on UI polish while preserving your brand voice."
-    ]
+    ],
+    contactLabel: "Contact"
   },
   fr: {
     badge: "Qualité boutique · Prix accessibles",
@@ -159,7 +160,8 @@ const copy = {
       "Routes Next.js typées et API SMTP prêtes à l’emploi.",
       "Relectures automatiques pour la performance et l’accessibilité.",
       "Itérations rapides sur l’UI tout en respectant votre ton de marque."
-    ]
+    ],
+    contactLabel: "Contact"
   }
 } satisfies Record<Lang, any>;
 
@@ -219,13 +221,13 @@ export default function HomePage() {
       });
     };
     onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    window.addEventListener("resize", onScroll);
-    return () => {
-      window.removeEventListener("scroll", onScroll);
-      window.removeEventListener("resize", onScroll);
-    };
-  }, []);
+      window.addEventListener("scroll", onScroll, { passive: true });
+      window.addEventListener("resize", onScroll);
+      return () => {
+        window.removeEventListener("scroll", onScroll);
+        window.removeEventListener("resize", onScroll);
+      };
+    }, []);
 
   useEffect(() => {
     const header = document.querySelector<HTMLElement>(".overlay-header");
@@ -250,6 +252,28 @@ export default function HomePage() {
 
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  useEffect(() => {
+    const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (prefersReduced) return;
+
+    const elements = Array.from(document.querySelectorAll<HTMLElement>(".reveal"));
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("is-visible");
+          } else {
+            entry.target.classList.remove("is-visible");
+          }
+        });
+      },
+      { threshold: 0.18, rootMargin: "0px 0px -6% 0px" }
+    );
+
+    elements.forEach((el) => observer.observe(el));
+    return () => observer.disconnect();
   }, []);
 
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
@@ -337,20 +361,24 @@ export default function HomePage() {
       </section>
 
       <section className="hero" id="hero">
-        <div className="badge">{t.badge}</div>
+        <div className="badge reveal">{t.badge}</div>
         <div className="hero-grid">
-          <div>
+          <div className="reveal" style={{ transitionDelay: "60ms" }}>
             <h1 className="tagline">{t.headline}</h1>
             <p className="lead">{t.heroLead}</p>
             <div className="cta-row">
               <a className="button" href="#quote">{t.ctaQuote}</a>
               <a className="button secondary" href="#mock">{t.ctaMock}</a>
             </div>
-            <div className="ribbon">{t.ribbon}</div>
+            <div className="ribbon reveal" style={{ transitionDelay: "120ms" }}>{t.ribbon}</div>
           </div>
           <div className="cards">
-            {t.cards.map((card: any) => (
-              <div className="card" key={card.title}>
+            {t.cards.map((card: any, idx: number) => (
+              <div
+                className="card reveal"
+                style={{ transitionDelay: `${140 + idx * 70}ms` }}
+                key={card.title}
+              >
                 <h3>{card.title}</h3>
                 <p>{card.body}</p>
               </div>
@@ -368,8 +396,8 @@ export default function HomePage() {
       </section>
 
       <section id="mock">
-        <h2>{t.mockTitle}</h2>
-        <p className="lead">{t.mockLead}</p>
+        <h2 className="reveal">{t.mockTitle}</h2>
+        <p className="lead reveal" style={{ transitionDelay: "90ms" }}>{t.mockLead}</p>
       </section>
 
       <section className="scroll-image" aria-hidden="true">
@@ -381,10 +409,14 @@ export default function HomePage() {
       </section>
 
       <section id="process">
-        <h2>{t.processTitle}</h2>
+        <h2 className="reveal">{t.processTitle}</h2>
         <div className="cards">
-          {t.process.map((step: any) => (
-            <div className="card" key={step.title}>
+          {t.process.map((step: any, idx: number) => (
+            <div
+              className="card reveal"
+              style={{ transitionDelay: `${idx * 80}ms` }}
+              key={step.title}
+            >
               <h3>{step.title}</h3>
               <p>{step.body}</p>
             </div>
@@ -394,8 +426,8 @@ export default function HomePage() {
 
       <section id="quote">
         <div className="form-shell">
-          <h2>{t.formTitle}</h2>
-          <p className="lead">{t.formLead}</p>
+          <h2 className="reveal">{t.formTitle}</h2>
+          <p className="lead reveal" style={{ transitionDelay: "90ms" }}>{t.formLead}</p>
           <form onSubmit={handleSubmit}>
             <label>
               {t.labels.name}
@@ -475,11 +507,15 @@ export default function HomePage() {
       </section>
 
       <section id="agent">
-        <h2>{t.agentTitle}</h2>
-        <p className="lead">{t.agentLead}</p>
+        <h2 className="reveal">{t.agentTitle}</h2>
+        <p className="lead reveal" style={{ transitionDelay: "90ms" }}>{t.agentLead}</p>
         <div className="cards">
-          {t.agentList.map((item: string) => (
-            <div className="card" key={item}>
+          {t.agentList.map((item: string, idx: number) => (
+            <div
+              className="card reveal"
+              style={{ transitionDelay: `${idx * 80}ms` }}
+              key={item}
+            >
               <p>{item}</p>
             </div>
           ))}
@@ -488,6 +524,12 @@ export default function HomePage() {
 
       <footer>
         <p style={{ marginTop: "8px", color: "var(--muted)" }}>{t.copyright}</p>
+        <div className="footer-contact">
+          <span className="label">{t.contactLabel}</span>
+          <a href="tel:+15145160515">+1 514-516-0515</a>
+          <span className="dot">·</span>
+          <a href="mailto:info@spaxio.ca">info@spaxio.ca</a>
+        </div>
       </footer>
     </main>
   );
